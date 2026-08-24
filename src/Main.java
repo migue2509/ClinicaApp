@@ -25,7 +25,10 @@ public class Main {
 
         do {
             mostrarMenu();
-            opcion = leerEntero(scanner, "Seleccione una opción: ");
+            opcion = leerEntero(
+                    scanner,
+                    "Seleccione una opción: "
+            );
 
             try {
                 switch (opcion) {
@@ -214,7 +217,8 @@ public class Main {
 
         LocalDate fecha = leerFecha(scanner);
 
-        List<Turno> turnos = servicio.listarTurnosDelDia(fecha);
+        List<Turno> turnos =
+                servicio.listarTurnosDelDia(fecha);
 
         mostrarTurnos(turnos);
     }
@@ -259,7 +263,8 @@ public class Main {
             return;
         }
 
-        List<Turno> turnos = servicio.buscarPorMedico(medico);
+        List<Turno> turnos =
+                servicio.buscarPorMedico(medico);
 
         mostrarTurnos(turnos);
     }
@@ -275,14 +280,16 @@ public class Main {
                 "Cédula del paciente: "
         );
 
-        Paciente paciente = servicio.buscarPorCedula(cedula);
+        Paciente paciente =
+                servicio.buscarPorCedula(cedula);
 
         if (paciente == null) {
             System.out.println("Paciente no encontrado.");
             return;
         }
 
-        List<Turno> turnos = servicio.buscarPorPaciente(paciente);
+        List<Turno> turnos =
+                servicio.buscarPorPaciente(paciente);
 
         mostrarTurnos(turnos);
     }
@@ -291,7 +298,9 @@ public class Main {
             Scanner scanner,
             ClinicaService servicio
     ) {
-        System.out.println("\n--- Cambiar estado del turno ---");
+        System.out.println(
+                "\n--- Cambiar estado del turno ---"
+        );
 
         int idTurno = leerEntero(
                 scanner,
@@ -317,8 +326,9 @@ public class Main {
         );
     }
 
-    private static LocalDate leerFecha(Scanner scanner) {
-
+    private static LocalDate leerFecha(
+            Scanner scanner
+    ) {
         while (true) {
             int anio = leerEntero(scanner, "Año: ");
             int mes = leerEntero(scanner, "Mes: ");
@@ -366,6 +376,7 @@ public class Main {
     ) {
         while (true) {
             System.out.print(mensaje);
+
             String entrada = scanner.nextLine();
 
             try {
@@ -386,10 +397,13 @@ public class Main {
         return scanner.nextLine().trim();
     }
 
-    private static void mostrarTurnos(List<Turno> turnos) {
-
+    private static void mostrarTurnos(
+            List<Turno> turnos
+    ) {
         if (turnos.isEmpty()) {
-            System.out.println("No se encontraron turnos.");
+            System.out.println(
+                    "No se encontraron turnos."
+            );
             return;
         }
 

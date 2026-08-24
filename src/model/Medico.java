@@ -2,20 +2,35 @@ package model;
 
 import interfaces.Registrable;
 
+import java.util.Locale;
+import java.util.Objects;
+
 public class Medico implements Registrable {
+
     private int id;
     private String nombre;
     private String apellido;
     private Especialidad especialidad;
 
-    public Medico(int id, String nombre, String apellido, Especialidad especialidad) {
-        this.id = id;
+    // Constructor sin ID para médicos nuevos
+    public Medico(
+            String nombre,
+            String apellido,
+            Especialidad especialidad
+    ) {
         setNombre(nombre);
         setApellido(apellido);
         setEspecialidad(especialidad);
     }
 
-    public Medico(String nombre, String apellido, Especialidad especialidad) {
+    // Constructor con ID para cargar médicos desde CSV
+    public Medico(
+            int id,
+            String nombre,
+            String apellido,
+            Especialidad especialidad
+    ) {
+        this.id = id;
         setNombre(nombre);
         setApellido(apellido);
         setEspecialidad(especialidad);
@@ -35,8 +50,11 @@ public class Medico implements Registrable {
 
     public void setNombre(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre no puede ser nulo o vacio.");
+            throw new IllegalArgumentException(
+                    "El nombre no puede ser nulo ni vacío."
+            );
         }
+
         this.nombre = nombre.trim();
     }
 
@@ -46,8 +64,11 @@ public class Medico implements Registrable {
 
     public void setApellido(String apellido) {
         if (apellido == null || apellido.trim().isEmpty()) {
-            throw new IllegalArgumentException("El apellido es obligatorio.");
+            throw new IllegalArgumentException(
+                    "El apellido no puede ser nulo ni vacío."
+            );
         }
+
         this.apellido = apellido.trim();
     }
 
@@ -57,43 +78,12 @@ public class Medico implements Registrable {
 
     public void setEspecialidad(Especialidad especialidad) {
         if (especialidad == null) {
-            throw new IllegalArgumentException("Tiene que elegir una especialidad valida.");
+            throw new IllegalArgumentException(
+                    "La especialidad no puede ser nula."
+            );
         }
+
         this.especialidad = especialidad;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        Medico otroMedico = (Medico) obj;
-
-        if (this.nombre.equalsIgnoreCase(otroMedico.nombre) && this.apellido.equalsIgnoreCase(otroMedico.apellido)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        return java.util.Objects.hash(
-                nombre.toLowerCase(),
-                apellido.toLowerCase()
-        );
-    }
-
-    @Override
-    public String toString() {
-        return "Dr. " + nombre + " " + apellido + " - " + especialidad;
     }
 
     @Override
@@ -103,11 +93,40 @@ public class Medico implements Registrable {
 
     @Override
     public boolean esValido() {
-        if (this.nombre != null && !this.nombre.isEmpty() &&
-                this.apellido != null && !this.apellido.isEmpty() &&
-                this.especialidad != null) {
+        return nombre != null
+                && !nombre.isEmpty()
+                && apellido != null
+                && !apellido.isEmpty()
+                && especialidad != null;
+    }
+
+    @Override
+    public boolean equals(Object objeto) {
+        if (this == objeto) {
             return true;
         }
-        return false;
+
+        if (objeto == null || getClass() != objeto.getClass()) {
+            return false;
+        }
+
+        Medico otroMedico = (Medico) objeto;
+
+        return nombre.equalsIgnoreCase(otroMedico.nombre)
+                && apellido.equalsIgnoreCase(otroMedico.apellido);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                nombre.toLowerCase(Locale.ROOT),
+                apellido.toLowerCase(Locale.ROOT)
+        );
+    }
+
+    @Override
+    public String toString() {
+        return "Dr. " + nombre + " " + apellido
+                + " - " + especialidad;
     }
 }
