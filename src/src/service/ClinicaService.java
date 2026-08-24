@@ -153,6 +153,60 @@ public class ClinicaService implements Consultable {
     public List<Paciente> getPacientes() {
         return pacientes;
     }
+
+
+    public void registrarMedico(Medico m) {
+
+        if (m.esValido() == false) {
+            System.out.println("Los datos del medico no estan completos o son invalidos.");
+            return;
+        }
+
+        if (medicos.contains(m)) {
+            System.out.println("Ya existe un medico registrado con ese mismo nombre y apellido.");
+            return;
+        }
+
+        int idMasAlto = 0;
+        for (Medico medicoGuardado : medicos) {
+            if (medicoGuardado.getId() > idMasAlto) {
+                idMasAlto = medicoGuardado.getId();
+            }
+        }
+
+        m.setId(idMasAlto + 1);
+
+        medicos.add(m);
+
+        System.out.println("Medico registrado exitosamente: " + m.toString());
+    }
+
+    public Medico buscarPorNombreApellido(String nombre, String apellido) {
+        for (Medico m : medicos) {
+            if (m.getNombre().equalsIgnoreCase(nombre) && m.getApellido().equalsIgnoreCase(apellido)) {
+                return m;
+            }
+        }
+        return null;
+    }
+
+    public void listarMedicos() {
+        if (medicos.isEmpty()) {
+            System.out.println("No hay medicos registrados.");
+            return;
+        }
+
+        List<Medico> copiaMedicos = new ArrayList<>();
+        for (Medico m : medicos) {
+            copiaMedicos.add(m);
+        }
+
+        copiaMedicos.sort(
+                Comparator.comparing(Medico::getEspecialidad)
+                        .thenComparing(Medico::getApellido)
+        );
+    }
+}
   
  
     // ENCARGADO: JHOHAN TAREA: METODOS DE TURNO
